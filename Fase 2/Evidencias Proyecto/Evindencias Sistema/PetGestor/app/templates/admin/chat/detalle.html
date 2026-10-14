@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Conversación #{{ conv.id }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>Conversación #{{ conv.id }}</h1>
+<p class="conv-meta">
+    Remitente: <strong>{{ conv.cliente.nombre if conv.cliente else conv.nombre_visitante or 'Visitante' }}</strong>
+    — Asunto: {{ conv.asunto or '—' }}
+    — Estado: <strong>{{ conv.estado }}</strong>
+</p>
+
+<div class="chat-container">
+    {% for m in mensajes %}
+    <div class="chat-bubble {{ m.origen }}">
+        <small>
+            {% if m.origen == 'cliente' %}Cliente{% elif m.origen == 'sistema' %}Respuesta automática{% else %}Administrador{% endif %}
+            · {{ m.enviado_en.strftime('%d/%m %H:%M') }}
+        </small>
+        <p>{{ m.contenido }}</p>
+    </div>
+    {% else %}
+    <p class="empty-msg">Sin mensajes registrados en esta conversación.</p>
+    {% endfor %}
+</div>
+
+{% if conv.estado != 'archivada' %}
+<form method="POST" action="{{ url_for('admin_chat.responder', conv_id=conv.id) }}" class="reply-form">
+    <h3>Responder al cliente</h3>
+    <textarea name="mensaje" rows="4" required placeholder="Escriba su respuesta..."></textarea>
+    <button type="submit" class="btn btn-success">Enviar respuesta</button>
+</form>
+{% endif %}
+
+<div class="conv-actions">
+    <a href="{{ url_for('admin_chat.index') }}" class="btn btn-primary">Volver a la bandeja</a>
+    {% if conv.estado != 'archivada' %}
+    <form method="POST" action="{{ url_for('admin_chat.archivar', conv_id=conv.id) }}">
+        <button type="submit" class="btn btn-warning">Archivar conversación</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
+

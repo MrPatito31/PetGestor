@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Reporte Financiero{% endblock %}
+{% block content %}
+<h1>Reporte Financiero</h1>
+<form method="GET" style="display:flex; gap:0.5rem; margin:1rem 0; align-items:flex-end;">
+    <div><label>Desde</label><br><input type="date" name="desde" value="{{ desde }}" style="padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    <div><label>Hasta</label><br><input type="date" name="hasta" value="{{ hasta }}" style="padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    <button type="submit" class="btn btn-primary">Generar reporte</button>
+</form>
+
+<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1.5rem;">
+    <div style="background:#d4edda; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div>Total Ingresos</div><div style="font-size:1.8rem; font-weight:700; color:#155724;">${{ "%.0f"|format(balance.total_ingresos) }}</div>
+    </div>
+    <div style="background:#f8d7da; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div>Total Egresos</div><div style="font-size:1.8rem; font-weight:700; color:#721c24;">${{ "%.0f"|format(balance.total_egresos) }}</div>
+    </div>
+    {% if balance.es_positivo %}
+    <div style="background:#d4edda; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div>Ganancia Neta</div><div style="font-size:1.8rem; font-weight:700; color:#155724;">${{ "%.0f"|format(balance.ganancia_neta) }}</div>
+    </div>
+    {% else %}
+    <div style="background:#f8d7da; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div>Ganancia Neta</div><div style="font-size:1.8rem; font-weight:700; color:#721c24;">${{ "%.0f"|format(balance.ganancia_neta) }}</div>
+    </div>
+    {% endif %}
+</div>
+
+<table>
+    <thead><tr><th>Fecha</th><th>Ingresos</th><th>Egresos</th><th>Ganancia del día</th></tr></thead>
+    <tbody>
+        {% for dia in balance.dias %}
+        <tr>
+            <td>{{ dia.fecha }}</td>
+            <td style="color:#27ae60;">${{ "%.0f"|format(dia.ingresos) }}</td>
+            <td style="color:#e74c3c;">${{ "%.0f"|format(dia.egresos) }}</td>
+            {% if dia.ganancia >= 0 %}
+            <td style="color:#27ae60; font-weight:600;">${{ "%.0f"|format(dia.ganancia) }}</td>
+            {% else %}
+            <td style="color:#e74c3c; font-weight:600;">${{ "%.0f"|format(dia.ganancia) }}</td>
+            {% endif %}
+        </tr>
+        {% else %}
+        <tr><td colspan="4" style="text-align:center; padding:2rem; color:#666;">Sin movimientos en el período.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

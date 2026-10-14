@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Canal de Consultas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Canal de <span>Consultas</span></h1>
+        <p style="color:var(--text-muted); margin-top:.3rem;">Escríbenos y te responderemos a la brevedad</p>
+    </div>
+</div>
+
+<div style="max-width:720px; margin:0 auto;">
+    <div class="card" style="overflow:visible;">
+        <div style="background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dk) 100%); padding:1.25rem 1.5rem; display:flex; align-items:center; gap:.75rem; border-radius:10px 10px 0 0;">
+            <div>
+                <div style="color:white; font-weight:700; font-size:1rem;">Chat en vivo</div>
+                <div style="color:rgba(255,255,255,.7); font-size:.82rem;">Tiempo de respuesta: menos de 24 hrs</div>
+            </div>
+        </div>
+
+        <div class="card-body" style="padding:1.5rem;">
+            <div id="chat-box"></div>
+
+            <div id="inicio-form">
+                <input type="text" id="nombre-input" class="form-control" placeholder="Tu nombre" style="margin-bottom:.75rem;">
+                <button onclick="iniciarChat()" class="btn btn-primary" style="width:100%;">
+                    Iniciar consulta
+                </button>
+            </div>
+
+            <div id="mensaje-form" style="display:none;">
+                <div style="display:flex; gap:.5rem;">
+                    <input type="text" id="mensaje-input" class="form-control" placeholder="Escribe tu consulta aquí...">
+                    <button onclick="enviarMensaje()" class="btn btn-primary" style="flex-shrink:0; padding:.6rem 1.2rem;">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info adicional -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem;">
+        <div class="card">
+            <div class="card-body" style="padding:1.1rem;">
+                <div style="font-weight:700; font-size:.9rem; margin-bottom:.25rem;">Horario de atención</div>
+                <div style="color:var(--text-muted); font-size:.85rem;">Lunes a Sábado<br>9:00 – 18:00 hrs</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body" style="padding:1.1rem;">
+                <div style="font-weight:700; font-size:.9rem; margin-bottom:.25rem;">¿Prefieres agendar?</div>
+                <div style="font-size:.85rem;">
+                    <a href="{{ url_for('cliente.agendar') }}" style="color:var(--primary); font-weight:600;">Reserva tu hora aquí</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chat_cliente.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Servicio{% endblock %}
+{% block content %}
+<h1>Nuevo Servicio</h1>
+<form method="POST" style="background:white; padding:2rem; border-radius:8px; max-width:550px; margin-top:1rem;">
+    <div style="margin-bottom:1rem;">
+        <label>Nombre del servicio *</label><br>
+        <input type="text" name="nombre" required placeholder="Ej. Baño básico, Corte sanitario..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+    </div>
+    <div style="margin-bottom:1rem;">
+        <label>Descripción</label><br>
+        <textarea name="descripcion" rows="3" placeholder="Detalle de lo que incluye el procedimiento..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;"></textarea>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
+        <div>
+            <label>Precio ($) *</label><br>
+            <input type="number" name="precio" min="1" step="1" required placeholder="8000" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+        </div>
+        <div>
+            <label>Duración (minutos) *</label><br>
+            <input type="number" name="duracion_min" min="10" step="5" value="60" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success" style="width:100%;">Registrar Servicio</button>
+    <a href="{{ url_for('admin_citas.servicios') }}" class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center; display:block;">Cancelar</a>
+</form>
+{% endblock %}

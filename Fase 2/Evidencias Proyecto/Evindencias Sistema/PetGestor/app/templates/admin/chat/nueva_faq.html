@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Nueva Respuesta Automática{% endblock %}
+{% block content %}
+<h1>Nueva Respuesta Automática</h1>
+<form method="POST" style="background:white; padding:2rem; border-radius:8px; max-width:600px; margin-top:1rem;">
+    <div style="margin-bottom:1rem;"><label>Pregunta / Título descriptivo *</label><br><input type="text" name="pregunta" required placeholder="¿Cuáles son las tarifas del servicio de baño?" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    <div style="margin-bottom:1rem;">
+        <label>Palabras clave (separadas por coma) *</label>
+        <small style="color:#666; display:block;">El sistema detectará estas palabras en las consultas de los clientes.</small>
+        <input type="text" name="keywords" required placeholder="precio,costo,cuanto,valor,tarifa" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+    </div>
+    <div style="margin-bottom:1rem;"><label>Respuesta automática *</label><br><textarea name="respuesta" rows="5" required placeholder="Respuesta que se enviará automáticamente al cliente..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></textarea></div>
+    <div style="margin-bottom:1.5rem;"><label>Prioridad de evaluación (mayor valor = prioridad más alta)</label><br><input type="number" name="prioridad" value="0" min="0" max="100" style="width:120px; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    <button type="submit" class="btn btn-success" style="width:100%;">Guardar Respuesta</button>
+    <a href="{{ url_for('admin_chat.faqs') }}" class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center; display:block;">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Inventario{% endblock %}
+{% block content %}
+<h1>Inventario de Insumos</h1>
+{% if alertas %}
+<div class="alert alert-warning" style="margin-top:1rem;">
+    <strong>{{ alertas|length }} producto(s) en nivel crítico de inventario:</strong>
+    {% for p in alertas %} {{ p.nombre }} ({{ p.stock_actual }} unid.) {% if not loop.last %} · {% endif %} {% endfor %}
+</div>
+{% endif %}
+<div style="margin:1rem 0;">
+    <a href="{{ url_for('admin_inventario.nuevo_producto') }}" class="btn btn-success">+ Nuevo Producto</a>
+</div>
+<table>
+    <thead><tr><th>Producto</th><th>Categoría</th><th>Stock Actual</th><th>Stock Mínimo</th><th>Unidad</th><th>Estado</th><th>Acciones</th></tr></thead>
+    <tbody>
+        {% for p in productos %}
+        <tr{% if p.en_stock_critico %} style="background:#fff9e6;"{% endif %}>
+            <td><strong>{{ p.nombre }}</strong></td>
+            <td>{{ p.categoria or '—' }}</td>
+            <td>{% if p.en_stock_critico %}<strong style="color:#e74c3c;">{{ p.stock_actual }}</strong>{% else %}<strong style="color:#27ae60;">{{ p.stock_actual }}</strong>{% endif %}</td>
+            <td>{{ p.stock_minimo }}</td>
+            <td>{{ p.unidad }}</td>
+            <td>{% if p.en_stock_critico %}<span class="badge" style="background:#f8d7da;color:#721c24;">Crítico</span>{% else %}<span class="badge" style="background:#d4edda;color:#155724;">Normal</span>{% endif %}</td>
+            <td>
+                <form method="POST" action="{{ url_for('admin_inventario.registrar_entrada', producto_id=p.id) }}" style="display:inline;">
+                    <input type="number" name="cantidad" min="1" value="1" style="width:50px; padding:0.25rem;">
+                    <input type="text" name="motivo" placeholder="Motivo" style="width:100px; padding:0.25rem;">
+                    <button type="submit" class="btn btn-success" style="font-size:0.8rem;">Entrada</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin_inventario.registrar_salida', producto_id=p.id) }}" style="display:inline; margin-left:0.25rem;">
+                    <input type="number" name="cantidad" min="1" value="1" style="width:50px; padding:0.25rem;">
+                    <button type="submit" class="btn btn-warning" style="font-size:0.8rem;">Salida</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center; padding:2rem; color:#666;">No hay productos registrados en el inventario.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

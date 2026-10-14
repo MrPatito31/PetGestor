@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Alertas de Inventario{% endblock %}
+
+{% block content %}
+<h1>Productos en Stock Crítico</h1>
+
+<p><a href="{{ url_for('admin_inventario.index') }}">← Volver al inventario</a></p>
+
+{% if productos %}
+<table>
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Stock actual</th>
+            <th>Stock mínimo</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in productos %}
+        <tr>
+            <td><strong>{{ p.nombre }}</strong></td>
+            <td>{{ p.categoria or '—' }}</td>
+            <td style="color: var(--danger, #e74c3c); font-weight: bold;">{{ p.stock_actual }} {{ p.unidad }}(s)</td>
+            <td>{{ p.stock_minimo }} {{ p.unidad }}(s)</td>
+            <td>
+                <form method="POST" action="{{ url_for('admin_inventario.registrar_entrada', producto_id=p.id) }}"
+                    style="display:inline;">
+                    <input type="number" name="cantidad" min="1" value="10" style="width:60px;" required>
+                    <input type="hidden" name="motivo" value="Reabastecimiento desde alertas">
+                    <button type="submit">Reabastecer</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No hay productos en nivel crítico de stock.</p>
+{% endif %}
+{% endblock %}

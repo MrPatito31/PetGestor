@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Inicio — Peluquería Canina Melipilla{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/inicio.css') }}">
+{% endblock %}
+{% block content %}
+
+<!-- ── Hero ─────────────────────────────────────── -->
+<section class="hero">
+    <img class="hero-img" src="{{ url_for('static', filename='img/hero.jpg') }}" alt="Peluquería Canina PetGestor">
+    <div class="hero-overlay">
+        <div class="hero-badge">Melipilla, Chile</div>
+        <h1 class="hero-title">
+            El cuidado que tu<br>
+            mascota <span class="highlight">merece</span>
+        </h1>
+        <p class="hero-subtitle">
+            Peluquería y grooming profesional con amor y experiencia.
+            Baño, corte, tratamientos y mucho más.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('cliente.agendar') }}" class="btn btn-hero-primary">
+                Agendar Cita
+            </a>
+            <a href="{{ url_for('cliente.servicios') }}" class="btn btn-hero-outline">
+                Ver Servicios
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── Trust bar ─────────────────────────────────── -->
+<div class="trust-bar">
+    <div class="trust-item">Grooming profesional</div>
+    <div class="trust-item">Trato con amor</div>
+    <div class="trust-item">Agendamiento online</div>
+    <div class="trust-item">Atención personalizada</div>
+</div>
+
+<!-- ── Servicios ─────────────────────────────────── -->
+<div class="section-title">
+    <h2>Nuestros Servicios</h2>
+    <div class="pill-divider"></div>
+    <p>Todo lo que tu mascota necesita en un solo lugar</p>
+</div>
+
+<div class="services-grid">
+    {% for s in servicios %}
+    <div class="service-card">
+        <div class="service-name">{{ s.nombre }}</div>
+        <p class="service-desc">{{ s.descripcion or 'Servicio profesional para el cuidado y bienestar de tu mascota.' }}</p>
+        <div class="service-footer">
+            <span class="service-price">${{ "%.0f"|format(s.precio) }}</span>
+            <span class="service-duration">{{ s.duracion_min }} min</span>
+        </div>
+    </div>
+    {% else %}
+    <p style="color: var(--text-muted); grid-column: 1/-1; text-align:center; padding: 2rem;">
+        No hay servicios registrados en este momento.
+    </p>
+    {% endfor %}
+</div>
+
+<!-- ── CTA ───────────────────────────────────────── -->
+<div class="cta-section">
+    <h2>¿Listo para dar el primer paso?</h2>
+    <p>Agenda tu cita en minutos y nosotros nos encargamos del resto.</p>
+    <div class="cta-buttons">
+        <a href="{{ url_for('cliente.agendar') }}" class="btn btn-cta-white">
+            Agendar Cita Ahora
+        </a>
+        <a href="{{ url_for('cliente.chat') }}" class="btn btn-cta-ghost">
+            Tengo una Consulta
+        </a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Catálogo de Servicios{% endblock %}
+{% block content %}
+<h1>Catálogo de Servicios</h1>
+<div style="margin:1rem 0;">
+    <a href="{{ url_for('admin_citas.nuevo_servicio') }}" class="btn btn-success">+ Nuevo Servicio</a>
+    <a href="{{ url_for('admin_citas.index') }}" class="btn btn-primary" style="margin-left:0.5rem;">Volver a Agenda</a>
+</div>
+<table>
+    <thead><tr><th>ID</th><th>Servicio</th><th>Descripción</th><th>Precio</th><th>Duración</th><th>Estado</th><th>Acciones</th></tr></thead>
+    <tbody>
+        {% for s in servicios %}
+        <tr>
+            <td>{{ s.id }}</td>
+            <td><strong>{{ s.nombre }}</strong></td>
+            <td>{{ s.descripcion or '—' }}</td>
+            <td>${{ "%.0f"|format(s.precio) }}</td>
+            <td>{{ s.duracion_min }} min</td>
+            <td>{% if s.activo %}<span class="badge" style="background:#d4edda;color:#155724;">Activo</span>{% else %}<span class="badge" style="background:#f8d7da;color:#721c24;">Inactivo</span>{% endif %}</td>
+            <td>
+                <a href="{{ url_for('admin_citas.editar_servicio', servicio_id=s.id) }}" class="btn btn-primary" style="font-size:0.8rem;">Editar</a>
+                <form method="POST" action="{{ url_for('admin_citas.toggle_servicio', servicio_id=s.id) }}" style="display:inline; margin-left:0.25rem;">
+                    <button type="submit" class="btn {{ 'btn-warning' if s.activo else 'btn-success' }}" style="font-size:0.8rem;">{{ 'Desactivar' if s.activo else 'Activar' }}</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center; padding:2rem; color:#666;">No hay servicios registrados en el catálogo.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Bandeja de Mensajería{% endblock %}
+{% block content %}
+<h1>Bandeja de Mensajes {% if pendientes_count > 0 %}<span class="badge" style="background:#e74c3c;color:white;border-radius:12px;padding:0.25rem 0.75rem;font-size:0.9rem;">{{ pendientes_count }} pendiente(s)</span>{% endif %}</h1>
+
+<div style="margin:1rem 0; display:flex; gap:0.5rem;">
+    <a href="?estado=abierta"    class="btn {% if estado_filtro=='abierta'    %}btn-primary{% else %}btn-warning{% endif %}">Abiertas</a>
+    <a href="?estado=respondida" class="btn {% if estado_filtro=='respondida' %}btn-primary{% else %}btn-warning{% endif %}">Respondidas</a>
+    <a href="?estado=archivada"  class="btn {% if estado_filtro=='archivada'  %}btn-primary{% else %}btn-warning{% endif %}">Archivadas</a>
+    <a href="?estado=todas"      class="btn {% if estado_filtro=='todas'      %}btn-primary{% else %}btn-warning{% endif %}">Todas</a>
+</div>
+
+<table>
+    <thead><tr><th>ID</th><th>Remitente</th><th>Asunto</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead>
+    <tbody>
+        {% for conv in conversaciones %}
+        <tr>
+            <td>{{ conv.id }}</td>
+            <td>{{ conv.cliente.nombre if conv.cliente else conv.nombre_visitante or 'Visitante' }}</td>
+            <td>{{ conv.asunto or '—' }}</td>
+            <td><span class="badge badge-{{ conv.estado }}">{{ conv.estado }}</span></td>
+            <td>{{ conv.creado_en.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>
+                <a href="{{ url_for('admin_chat.detalle', conv_id=conv.id) }}" class="btn btn-primary" style="font-size:0.8rem;">Ver conversación</a>
+                {% if conv.estado != 'archivada' %}
+                <form method="POST" action="{{ url_for('admin_chat.archivar', conv_id=conv.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-warning" style="font-size:0.8rem;">Archivar</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" style="text-align:center; padding:2rem; color:#666;">No hay conversaciones en esta bandeja.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top:2rem;">
+    <a href="{{ url_for('admin_chat.faqs') }}" class="btn btn-primary">Gestionar Respuestas Automáticas (FAQ)</a>
+</div>
+{% endblock %}
