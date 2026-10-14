@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Control de Caja — Finanzas{% endblock %}
+{% block content %}
+<h1>Control de Caja — {{ balance.fecha.strftime('%d/%m/%Y') }}</h1>
+
+<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#d4edda; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div style="font-size:0.9rem; color:#155724;">Total Ingresos</div>
+        <div style="font-size:2rem; font-weight:700; color:#155724;">${{ "%.0f"|format(balance.total_ingresos) }}</div>
+    </div>
+    <div style="background:#f8d7da; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div style="font-size:0.9rem; color:#721c24;">Total Egresos</div>
+        <div style="font-size:2rem; font-weight:700; color:#721c24;">${{ "%.0f"|format(balance.total_egresos) }}</div>
+    </div>
+    {% if balance.es_positivo %}
+    <div style="background:#d4edda; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div style="font-size:0.9rem; color:#155724;">Balance Neto (Superávit)</div>
+        <div style="font-size:2rem; font-weight:700; color:#155724;">${{ "%.0f"|format(balance.ganancia) }}</div>
+    </div>
+    {% else %}
+    <div style="background:#f8d7da; padding:1.5rem; border-radius:8px; text-align:center;">
+        <div style="font-size:0.9rem; color:#721c24;">Balance Neto (Déficit)</div>
+        <div style="font-size:2rem; font-weight:700; color:#721c24;">${{ "%.0f"|format(balance.ganancia) }}</div>
+    </div>
+    {% endif %}
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3 style="margin-bottom:1rem;">Registrar Ingreso</h3>
+        <form method="POST" action="{{ url_for('admin_finanzas.registrar_ingreso') }}">
+            <div style="margin-bottom:0.75rem;"><label>Monto ($) *</label><br><input type="number" name="monto" step="1" min="1" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;"></div>
+            <div style="margin-bottom:0.75rem;"><label>Descripción</label><br><input type="text" name="descripcion" placeholder="Ej. Pago servicio peluquería..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;"></div>
+            <div style="margin-bottom:0.75rem;"><label>Método de pago</label><br>
+                <select name="metodo_pago" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="debito">Débito</option>
+                    <option value="credito">Crédito</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success" style="width:100%;">Registrar Ingreso</button>
+        </form>
+    </div>
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3 style="margin-bottom:1rem;">Registrar Egreso</h3>
+        <form method="POST" action="{{ url_for('admin_finanzas.registrar_egreso') }}">
+            <div style="margin-bottom:0.75rem;"><label>Monto ($) *</label><br><input type="number" name="monto" step="1" min="1" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;"></div>
+            <div style="margin-bottom:0.75rem;"><label>Descripción *</label><br><input type="text" name="descripcion" required placeholder="Ej. Compra insumos de aseo..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;"></div>
+            <div style="margin-bottom:0.75rem;"><label>Número de comprobante</label><br><input type="text" name="comprobante" placeholder="N° Boleta / Factura..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;"></div>
+            <button type="submit" class="btn btn-danger" style="width:100%;">Registrar Egreso</button>
+        </form>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3 style="margin-bottom:1rem;">Ingresos del Día</h3>
+        {% for i in ingresos %}<div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #eee;"><span>{{ i.descripcion or 'Servicio' }}</span><strong style="color:#27ae60;">+${{ "%.0f"|format(i.monto) }}</strong></div>{% else %}<p style="color:#666;">Sin ingresos registrados hoy.</p>{% endfor %}
+    </div>
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3 style="margin-bottom:1rem;">Egresos del Día</h3>
+        {% for e in egresos %}<div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #eee;"><span>{{ e.descripcion }}</span><strong style="color:#e74c3c;">-${{ "%.0f"|format(e.monto) }}</strong></div>{% else %}<p style="color:#666;">Sin egresos registrados hoy.</p>{% endfor %}
+    </div>
+</div>
+{% endblock %}

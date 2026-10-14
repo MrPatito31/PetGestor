@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Agendar Cita{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Agendar <span>Cita</span></h1>
+        <p style="color:var(--text-muted); margin-top:.3rem;">Completa el formulario y nos pondremos en contacto contigo</p>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 340px; gap:2rem; align-items:start;">
+
+    <!-- Formulario -->
+    <form method="POST" class="card">
+        <div class="card-body" style="padding:2rem;">
+
+            <!-- Sección cliente -->
+            <div style="display:flex; align-items:center; gap:.7rem; margin-bottom:1.5rem;">
+                <div style="background:var(--primary-lt); color:var(--primary); width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800;">1</div>
+                <h3 style="font-size:1rem; font-weight:700;">Datos del Cliente</h3>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
+                <div class="form-group">
+                    <label>Nombre completo *</label>
+                    <input type="text" name="nombre" required class="form-control" placeholder="Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>RUT *</label>
+                    <input type="text" name="rut" placeholder="12345678-9" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono *</label>
+                    <input type="tel" name="telefono" required class="form-control" placeholder="+56 9 1234 5678">
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" name="email" class="form-control" placeholder="tucorreo@email.com">
+                </div>
+            </div>
+
+            <hr style="border:none; border-top:1px solid var(--border); margin:1.5rem 0;">
+
+            <!-- Sección mascota -->
+            <div style="display:flex; align-items:center; gap:.7rem; margin-bottom:1.5rem;">
+                <div style="background:var(--primary-lt); color:var(--primary); width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800;">2</div>
+                <h3 style="font-size:1rem; font-weight:700;">Datos de la Mascota</h3>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
+                <div class="form-group">
+                    <label>Nombre de la mascota *</label>
+                    <input type="text" name="nombre_mascota" required class="form-control" placeholder="Ej. Toby">
+                </div>
+                <div class="form-group">
+                    <label>Especie</label>
+                    <select name="especie" class="form-control">
+                        <option value="Perro">Perro</option>
+                        <option value="Gato">Gato</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Raza</label>
+                    <input type="text" name="raza" placeholder="Ej. Poodle, Mestizo, Golden Retriever..." class="form-control">
+                </div>
+            </div>
+
+            <hr style="border:none; border-top:1px solid var(--border); margin:1.5rem 0;">
+
+            <!-- Sección servicio -->
+            <div style="display:flex; align-items:center; gap:.7rem; margin-bottom:1.5rem;">
+                <div style="background:var(--primary-lt); color:var(--primary); width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800;">3</div>
+                <h3 style="font-size:1rem; font-weight:700;">Servicio y Horario</h3>
+            </div>
+
+            <div class="form-group">
+                <label>Servicio requerido *</label>
+                <select name="servicio_id" required class="form-control">
+                    <option value="">-- Seleccione un servicio --</option>
+                    {% for s in servicios %}
+                    <option value="{{ s.id }}">{{ s.nombre }} — ${{ "%.0f"|format(s.precio) }} ({{ s.duracion_min }} min)</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Fecha y hora solicitada *</label>
+                <input type="datetime-local" name="fecha_hora" required min="{{ now }}" class="form-control">
+            </div>
+
+            <div class="form-group" style="margin-bottom:1.75rem;">
+                <label>Observaciones o cuidados especiales</label>
+                <textarea name="notas" rows="3" placeholder="Alergias, conductas o indicaciones médicas..." class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success" style="width:100%; padding:.85rem; font-size:1rem;">
+                Solicitar Cita
+            </button>
+        </div>
+    </form>
+
+    <!-- Panel lateral -->
+    <div style="display:flex; flex-direction:column; gap:1.2rem; position:sticky; top:calc(var(--nav-h) + 1.5rem);">
+        <div class="card">
+            <div style="background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dk) 100%); padding:1.5rem; text-align:center; border-radius:10px 10px 0 0;">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo PetGestor"
+                     style="width:80px; height:80px; object-fit:contain; border-radius:12px; background:white; padding:6px; box-shadow: 0 4px 12px rgba(0,0,0,.2);">
+                <div style="color:white; font-weight:700; font-size:1.1rem; margin-top:.75rem;">PetGestor</div>
+                <div style="color:rgba(255,255,255,.75); font-size:.85rem;">Peluquería Canina Melipilla</div>
+            </div>
+            <div class="card-body" style="padding:1.25rem;">
+                <div style="display:flex; flex-direction:column; gap:.85rem;">
+                    <div>
+                        <div style="font-weight:600; font-size:.9rem;">Ubicación</div>
+                        <div style="color:var(--text-muted); font-size:.85rem;">Melipilla, Región Metropolitana</div>
+                    </div>
+                    <div>
+                        <div style="font-weight:600; font-size:.9rem;">Horario de atención</div>
+                        <div style="color:var(--text-muted); font-size:.85rem;">Lunes a Sábado<br>9:00 – 18:00 hrs</div>
+                    </div>
+                    <div>
+                        <div style="font-weight:600; font-size:.9rem;">¿Tienes dudas?</div>
+                        <div style="color:var(--text-muted); font-size:.85rem;">
+                            <a href="{{ url_for('cliente.chat') }}" style="color:var(--primary); font-weight:600;">Escríbenos aquí</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lt); border-color:var(--primary);">
+            <div class="card-body" style="padding:1.25rem;">
+                <div style="font-weight:700; color:var(--primary); margin-bottom:.5rem;">Ten en cuenta</div>
+                <ul style="color:var(--text-muted); font-size:.85rem; padding-left:1.2rem; line-height:1.8;">
+                    <li>Confirmaremos tu cita por teléfono</li>
+                    <li>Llega 5 min antes de tu hora</li>
+                    <li>Tu mascota debe venir en ayunas si es su primera vez</li>
+                    <li>Puedes cancelar hasta 24 hrs antes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Agenda de Citas{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Agenda de <span>Citas</span></h1>
+    <a href="{{ url_for('admin_citas.servicios') }}" class="btn btn-primary">Catálogo de Servicios</a>
+</div>
+
+<form method="GET" style="margin-bottom:1.5rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+    <select name="estado" class="form-control" style="width:auto;">
+        <option value="todas" {% if estado_filtro=='todas' %}selected{% endif %}>Todos los estados</option>
+        <option value="pendiente"  {% if estado_filtro=='pendiente' %}selected{% endif %}>Pendientes</option>
+        <option value="confirmada" {% if estado_filtro=='confirmada' %}selected{% endif %}>Confirmadas</option>
+        <option value="en_proceso" {% if estado_filtro=='en_proceso' %}selected{% endif %}>En proceso</option>
+        <option value="finalizada" {% if estado_filtro=='finalizada' %}selected{% endif %}>Finalizadas</option>
+        <option value="cancelada"  {% if estado_filtro=='cancelada' %}selected{% endif %}>Canceladas</option>
+    </select>
+    <input type="date" name="fecha" value="{{ fecha_filtro }}" class="form-control" style="width:auto;">
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th><th>Cliente</th><th>Mascota</th><th>Servicio</th>
+            <th>Fecha y Hora</th><th>Estado</th><th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cita in citas %}
+        <tr>
+            <td>{{ cita.id }}</td>
+            <td>{{ cita.cliente.nombre }}</td>
+            <td>{{ cita.mascota.nombre }}</td>
+            <td>{{ cita.servicio.nombre }}</td>
+            <td>{{ cita.fecha_hora_inicio.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td><span class="badge badge-{{ cita.estado }}">{{ cita.estado }}</span></td>
+            <td><a href="{{ url_for('admin_citas.detalle', cita_id=cita.id) }}" class="btn btn-primary" style="font-size:0.8rem;">Ver detalle</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center; padding:2rem; color:#666;">No hay citas registradas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

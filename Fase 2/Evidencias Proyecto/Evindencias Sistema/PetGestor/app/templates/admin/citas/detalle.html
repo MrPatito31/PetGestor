@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Cita #{{ cita.id }}{% endblock %}
+{% block content %}
+<h1>Detalle de Cita #{{ cita.id }}</h1>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem;">
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3>Cliente</h3>
+        <p><strong>Nombre:</strong> {{ cita.cliente.nombre }}</p>
+        <p><strong>RUT:</strong> {{ cita.cliente.rut }}</p>
+        <p><strong>Teléfono:</strong> {{ cita.cliente.telefono }}</p>
+    </div>
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3>Mascota</h3>
+        <p><strong>Nombre:</strong> {{ cita.mascota.nombre }}</p>
+        <p><strong>Especie:</strong> {{ cita.mascota.especie }}</p>
+        <p><strong>Raza:</strong> {{ cita.mascota.raza or '—' }}</p>
+    </div>
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3>Servicio</h3>
+        <p><strong>Servicio:</strong> {{ cita.servicio.nombre }}</p>
+        <p><strong>Inicio:</strong> {{ cita.fecha_hora_inicio.strftime('%d/%m/%Y %H:%M') }}</p>
+        <p><strong>Fin aproximado:</strong> {{ cita.fecha_hora_fin.strftime('%H:%M') }}</p>
+        <p><strong>Valor:</strong> ${{ "%.0f"|format(cita.precio_final) }}</p>
+    </div>
+    <div style="background:white; padding:1.5rem; border-radius:8px;">
+        <h3>Estado y WhatsApp</h3>
+        <p><span class="badge badge-{{ cita.estado }}" style="font-size:1rem; padding:0.4rem 0.8rem;">{{ cita.estado }}</span></p>
+        <p style="margin-top:0.5rem;">
+            <strong>Notificación Twilio:</strong> 
+            <span class="{{ 'text-success' if cita.whatsapp_enviado else 'text-warning' }}" style="font-weight:600;">
+                {{ 'Enviada' if cita.whatsapp_enviado else 'Pendiente' }}
+            </span>
+        </p>
+        <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <form method="POST" action="{{ url_for('admin_citas.reenviar_whatsapp', cita_id=cita.id) }}" style="margin:0;">
+                <button type="submit" class="btn btn-outline" style="padding:0.4rem 0.8rem; font-size:0.85rem;">
+                    Reenviar WhatsApp
+                </button>
+            </form>
+            {% if link_whatsapp %}
+            <a href="{{ link_whatsapp }}" target="_blank" rel="noopener noreferrer" class="btn" style="background:#25D366; color:white; padding:0.4rem 0.8rem; font-size:0.85rem; text-decoration:none;">
+                Abrir WhatsApp Web
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if cita.notas_cliente %}
+<div style="background:white; padding:1.5rem; border-radius:8px; margin-top:1.5rem;">
+    <h3>Observaciones del cliente</h3>
+    <p>{{ cita.notas_cliente }}</p>
+</div>
+{% endif %}
+
+<div style="background:white; padding:1.5rem; border-radius:8px; margin-top:1.5rem;">
+    <h3>Gestión de Estado</h3>
+    <form method="POST" action="{{ url_for('admin_citas.cambiar_estado', cita_id=cita.id) }}" style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:flex-end;">
+        <div>
+            <label>Modificar estado</label><br>
+            <select name="estado" style="padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+                <option value="confirmada">Confirmar</option>
+                <option value="en_proceso">En proceso</option>
+                <option value="finalizada">Finalizar</option>
+                <option value="cancelada">Cancelar</option>
+            </select>
+        </div>
+        <div style="flex:1;">
+            <label>Observaciones internas (opcional)</label><br>
+            <input type="text" name="notas_admin" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar estado</button>
+    </form>
+</div>
+
+<div style="margin-top:1.5rem;">
+    <a href="{{ url_for('admin_citas.index') }}" class="btn btn-primary">Volver a la agenda</a>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Acceso Administrativo{% endblock %}
+{% block content %}
+
+<div style="max-width:420px; margin:3rem auto;">
+    <div class="card" style="overflow:hidden;">
+        <!-- Header card -->
+        <div style="background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dk) 100%); padding:2rem; text-align:center;">
+            <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo PetGestor"
+                 style="width:72px; height:72px; object-fit:contain; border-radius:10px; background:white; padding:5px; box-shadow:0 4px 12px rgba(0,0,0,.2); margin-bottom:.75rem; display:block; margin-left:auto; margin-right:auto;">
+            <div style="color:white; font-weight:800; font-size:1.2rem;">PetGestor</div>
+            <div style="color:rgba(255,255,255,.7); font-size:.85rem;">Panel Administrativo</div>
+        </div>
+
+        <div class="card-body" style="padding:2rem;">
+            <h2 style="font-size:1.15rem; font-weight:700; text-align:center; margin-bottom:1.75rem; color:var(--text);">
+                Iniciar Sesión
+            </h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" name="email" required class="form-control" placeholder="admin@petgestor.cl">
+                </div>
+                <div class="form-group" style="margin-bottom:1.75rem;">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" required class="form-control" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; padding:.8rem; font-size:1rem;">
+                    → Ingresar
+                </button>
+            </form>
+            <div style="text-align:center; margin-top:1.25rem;">
+                <a href="{{ url_for('cliente.inicio') }}" style="color:var(--text-muted); font-size:.85rem; text-decoration:none;">
+                    ← Volver al inicio
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

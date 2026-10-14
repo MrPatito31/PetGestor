@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Producto{% endblock %}
+{% block content %}
+<h1>Nuevo Producto</h1>
+<form method="POST" style="background:white; padding:2rem; border-radius:8px; max-width:500px; margin-top:1rem;">
+    <div style="margin-bottom:1rem;"><label>Nombre *</label><br><input type="text" name="nombre" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    <div style="margin-bottom:1rem;"><label>Descripción</label><br><textarea name="descripcion" rows="2" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></textarea></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+        <div><label>Categoría</label><br><input type="text" name="categoria" placeholder="Higiene, Insumos, Accesorios..." style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+        <div><label>Unidad de medida</label><br>
+            <select name="unidad" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                <option value="unidad">Unidad</option>
+                <option value="ml">Mililitro (ml)</option>
+                <option value="kg">Kilogramo (kg)</option>
+                <option value="litro">Litro</option>
+            </select>
+        </div>
+        <div><label>Stock inicial</label><br><input type="number" name="stock_actual" value="0" min="0" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+        <div><label>Stock mínimo</label><br><input type="number" name="stock_minimo" value="3" min="1" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    </div>
+    <div style="margin-bottom:1.5rem;"><label>Precio de costo unitario ($)</label><br><input type="number" name="precio_compra" step="1" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;"></div>
+    <button type="submit" class="btn btn-success" style="width:100%;">Registrar Producto</button>
+    <a href="{{ url_for('admin_inventario.index') }}" class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center; display:block;">Cancelar</a>
+</form>
+{% endblock %}

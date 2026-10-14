@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Editar Servicio{% endblock %}
+{% block content %}
+<h1>Editar Servicio #{{ servicio.id }}</h1>
+<form method="POST" style="background:white; padding:2rem; border-radius:8px; max-width:550px; margin-top:1rem;">
+    <div style="margin-bottom:1rem;">
+        <label>Nombre del servicio *</label><br>
+        <input type="text" name="nombre" value="{{ servicio.nombre }}" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+    </div>
+    <div style="margin-bottom:1rem;">
+        <label>Descripción</label><br>
+        <textarea name="descripcion" rows="3" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">{{ servicio.descripcion or '' }}</textarea>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
+        <div>
+            <label>Precio ($) *</label><br>
+            <input type="number" name="precio" min="1" step="1" value="{{ "%.0f"|format(servicio.precio) }}" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+        </div>
+        <div>
+            <label>Duración (minutos) *</label><br>
+            <input type="number" name="duracion_min" min="10" step="5" value="{{ servicio.duracion_min }}" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; margin-top:0.25rem;">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success" style="width:100%;">Guardar Cambios</button>
+    <a href="{{ url_for('admin_citas.servicios') }}" class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center; display:block;">Cancelar</a>
+</form>
+{% endblock %}

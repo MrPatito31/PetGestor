@@ -1,0 +1,293 @@
+/* ── CSS exclusivo de la página de inicio cliente ── */
+
+/* ── Hero Section ─────────────────────────────────── */
+.hero {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 520px;
+    margin-bottom: 4rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        100deg,
+        rgba(26,95,122,.82) 0%,
+        rgba(26,95,122,.55) 50%,
+        rgba(26,95,122,.10) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 3.5rem;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,.18);
+    backdrop-filter: blur(6px);
+    color: white;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: 99px;
+    border: 1px solid rgba(255,255,255,.3);
+    width: fit-content;
+    margin-bottom: 1.2rem;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    max-width: 520px;
+}
+
+.hero-title .highlight { color: #ffd580; }
+
+.hero-subtitle {
+    color: rgba(255,255,255,.88);
+    font-size: 1.1rem;
+    max-width: 420px;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    background: var(--accent);
+    color: white;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(232,121,90,.5);
+}
+
+.btn-hero-primary:hover {
+    background: var(--accent-dk);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(232,121,90,.6);
+}
+
+.btn-hero-outline {
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(6px);
+    border: 2px solid rgba(255,255,255,.5);
+    color: white;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+}
+
+.btn-hero-outline:hover {
+    background: rgba(255,255,255,.28);
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* ── Trust badges ─────────────────────────────────── */
+.trust-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.trust-icon {
+    font-size: 1.5rem;
+}
+
+/* ── Servicios section ────────────────────────────── */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.service-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 1.75rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    transition: transform var(--transition), box-shadow var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+.service-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.service-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.service-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.service-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.service-price {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--success);
+}
+
+.service-duration {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: var(--primary-lt);
+    color: var(--primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    font-weight: 600;
+}
+
+/* ── CTA Section ──────────────────────────────────── */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dk) 100%);
+    border-radius: 18px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    color: white;
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    font-size: 10rem;
+    opacity: 0.06;
+    right: -1rem;
+    top: -2rem;
+    transform: rotate(-20deg);
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+}
+
+.cta-section p {
+    font-size: 1.05rem;
+    opacity: 0.85;
+    margin-bottom: 1.75rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-cta-white {
+    background: white;
+    color: var(--primary);
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+}
+
+.btn-cta-white:hover {
+    background: #f0f6fa;
+    transform: translateY(-2px);
+    color: var(--primary);
+}
+
+.btn-cta-ghost {
+    background: rgba(255,255,255,.15);
+    border: 2px solid rgba(255,255,255,.45);
+    color: white;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+}
+
+.btn-cta-ghost:hover {
+    background: rgba(255,255,255,.25);
+    transform: translateY(-2px);
+    color: white;
+}

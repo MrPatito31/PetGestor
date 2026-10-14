@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: petgestor_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - petgestor_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - petgestor_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: petgestor_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - petgestor_net
+
+volumes:
+  petgestor_mysql_data:
+    driver: local
+
+networks:
+  petgestor_net:
+    driver: bridge

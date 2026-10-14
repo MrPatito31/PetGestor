@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Servicios{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Nuestros <span>Servicios</span></h1>
+        <p style="color:var(--text-muted); margin-top:.3rem;">Cuidado profesional para tu mejor amigo</p>
+    </div>
+    <a href="{{ url_for('cliente.agendar') }}" class="btn btn-accent">Agendar Cita</a>
+</div>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; margin-bottom:3rem;">
+    {% for s in servicios %}
+    <div class="card" style="transition: transform .25s, box-shadow .25s; cursor:default;"
+         onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-md)'"
+         onmouseleave="this.style.transform='';this.style.boxShadow=''">
+        <div class="card-body">
+            <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:.5rem;">{{ s.nombre }}</h2>
+            <p style="color:var(--text-muted); font-size:.9rem; line-height:1.6; margin-bottom:1.2rem;">
+                {{ s.descripcion or 'Servicio profesional para el cuidado y bienestar de tu mascota.' }}
+            </p>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:1rem;">
+                <strong style="color:var(--success); font-size:1.35rem;">${{ "%.0f"|format(s.precio) }}</strong>
+                <span style="background:var(--primary-lt); color:var(--primary); font-size:.82rem; font-weight:600; padding:.25rem .7rem; border-radius:99px;">
+                    ⏱ {{ s.duracion_min }} min
+                </span>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p style="color:var(--text-muted); grid-column:1/-1; text-align:center; padding:3rem;">
+        No hay servicios registrados en este momento.
+    </p>
+    {% endfor %}
+</div>
+
+<div style="background:linear-gradient(135deg, var(--accent) 0%, #c9604a 100%); border-radius:14px; padding:2.5rem; text-align:center; color:white;">
+    <h2 style="font-size:1.6rem; font-weight:800; margin-bottom:.5rem;">¿Quieres agendar un servicio?</h2>
+    <p style="opacity:.9; margin-bottom:1.5rem;">Reserva tu hora en minutos, sin complicaciones.</p>
+    <a href="{{ url_for('cliente.agendar') }}" class="btn" style="background:white; color:var(--accent); font-weight:700; padding:.85rem 2rem; font-size:1rem;">
+        Agendar Cita Ahora
+    </a>
+</div>
+
+{% endblock %}

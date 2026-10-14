@@ -1,0 +1,23 @@
+# ─── Framework Web ────────────────────────────────────
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Werkzeug==3.0.3
+
+# ─── Base de datos ────────────────────────────────────
+PyMySQL==1.1.1
+cryptography==42.0.8          # Requerido por PyMySQL para autenticación
+
+# ─── Migraciones ──────────────────────────────────────
+Flask-Migrate==4.0.7
+
+# ─── Variables de entorno ─────────────────────────────
+python-dotenv==1.0.1
+
+# ─── WhatsApp (UltraMsg) ─────────────────────────────
+requests==2.32.3
+
+# ─── Utilidades ───────────────────────────────────────
+python-dateutil==2.9.0.post0
+gunicorn==22.0.0
+
